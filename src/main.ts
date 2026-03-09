@@ -53,6 +53,9 @@ interface FrigateEvent {
     id: string;
     camera: string;
     label: string;
+    start_time: number;
+    end_time: number | null;
+    zones: string[];
     top_score?: number;
     has_snapshot: boolean;
     data?: {
