@@ -78,18 +78,18 @@ async function fetchSnapshotBuffer(eventId: string, queryParams: string = ''): P
 }
 
 // --- Helper: Send to Discord ---
-async function sendToDiscord(event: FrigateEvent, confidence: string, croppedBuf: Buffer, fullBuf: Buffer) {
+async function sendToDiscord(event: FrigateEvent, reviewId: string, croppedBuf: Buffer, fullBuf: Buffer) {
     const form = new FormData();
     
     // Construct the Discord Embed Payload
     const payload = {
         embeds: [{
-            title: `🚨 Detection: ${event.label.toUpperCase()}`,
+            title: `${event.label.charAt(0).toUpperCase() + event.label.slice(1)} detected by ${event.camera}`,
             color: objectColors[event.label] || 0x999999,
+            description: `Started <t:${event.start_time.toString().split(".")[0]}:R>`,
             fields: [
-                { name: 'Camera', value: event.camera, inline: true },
-                { name: 'Confidence', value: confidence, inline: true },
-                { name: 'Event ID', value: event.id, inline: true }
+                { name: '\u200B', value: `[**Review Event**](${FRIGATE_URL}/review?id=${reviewId})`, inline: true },
+                { name: '\u200B', value: `[**Live View**](${FRIGATE_URL}/#${event.camera})`, inline: true },
             ],
             // Use the "attachment://" protocol to link to the uploaded files
             image: { url: 'attachment://cropped.jpg' },
@@ -174,7 +174,7 @@ client.on('message', async (topic, message) => {
 
                 // If both downloads succeeded, send them to Discord
                 if (croppedBuffer && fullBuffer) {
-                    await sendToDiscord(event, confidenceStr, croppedBuffer, fullBuffer);
+                    await sendToDiscord(event, review.id, croppedBuffer, fullBuffer);
                 } else {
                     console.log(`[Warn] Skipped Discord alert for ${event.id} due to missing image(s).`);
                 }
