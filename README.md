@@ -28,7 +28,7 @@ Replace the example config options with your own.
 
 #### Build docker image
 
-`docker build frigate-discord-notify .`
+`docker build -t frigate-discord-notify .`
 
 #### Start container
 
