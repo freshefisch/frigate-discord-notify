@@ -1,7 +1,7 @@
 services:
   frigate-discord-notify:
     # environment:
-    # - TZ=Europe/Berlin # <-- Set your timezone, for logging purposes only
+    #   - TZ=Europe/Berlin # <-- Set your timezone, for logging purposes only
     image: frigate-discord-notify
     container_name: frigate-discord-notify
     restart: unless-stopped
