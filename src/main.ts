@@ -6,6 +6,8 @@ import yaml from 'js-yaml';
 import fs from 'fs';
 import path from 'path';
 
+import { objectColors } from './labelmapColors';
+
 require("log-timestamp")(function() {
     const timestamp = DateTime.now();
     return `${timestamp.toString()} %s`;
@@ -80,7 +82,7 @@ async function sendToDiscord(event: FrigateEvent, confidence: string, croppedBuf
     const payload = {
         embeds: [{
             title: `🚨 Detection: ${event.label.toUpperCase()}`,
-            color: 0xFF9900, // Orange color
+            color: objectColors[event.label] || 0x999999,
             fields: [
                 { name: 'Camera', value: event.camera, inline: true },
                 { name: 'Confidence', value: confidence, inline: true },
