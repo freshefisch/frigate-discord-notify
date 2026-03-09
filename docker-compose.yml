@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  frigate-discord-notify:
+    environment:
+    - TZ=Europe/Berlin # <-- Set your timezone
+    image: frigate-discord-notify
+    container_name: frigate-discord-notify
+    restart: unless-stopped
+    volumes:
+      - ./config.yml:/app/config/config.yml:ro
