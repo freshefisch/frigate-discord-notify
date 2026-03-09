@@ -14,7 +14,7 @@ It is recommended to run this project as a docker container. Following are the i
 
 #### Clone repository
     
-`git clone git@github.com:freshefisch/frigate-discord-notify.git`
+`git clone https://github.com/freshefisch/frigate-discord-notify.git`
     
 `cd frigate-discord-notify`
 
