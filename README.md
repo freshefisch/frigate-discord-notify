@@ -6,7 +6,16 @@ As of now, direct customization of the sent embed through a config file is not p
 
 ## Showcase
 
-... will follow when the project is slightly more mature
+![Discord embed sent by frigate-discord-notify](./docs/images/discord_embed_example.png)
+
+### Embed Features
+- **Title**: *object_name* detected by *camera_name*
+- **Description**: Start time of the event (not the same as the time the embed was sent!) as a relative time discord timestamp
+- **Review Event**: Link to the event in frigate
+- **Live View**: Link to the live camera view in frigate that triggered the detection
+- **Thumbnail** (small): Full size snapshot of the camera view
+- **Image** (large): Cropped snapshot with detection box
+- **Footer**: Timestamp of when embed was sent
 
 
 ## Installation
@@ -22,7 +31,7 @@ It is recommended to run this project as a docker container. Following are the i
 
 `mv example-config.yml config.yml`
 
-Replace the example config options with your own.
+Replace the [example config](./example-config.yml) options with your own.
 
 `nano config.yml`
 
