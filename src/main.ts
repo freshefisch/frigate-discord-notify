@@ -23,7 +23,8 @@ if (!fs.existsSync(configPath)) {
 const configStr = fs.readFileSync(configPath, 'utf8');
 const config = yaml.load(configStr) as any;
 
-const FRIGATE_URL = config.frigate.url;
+const FRIGATE_DATA_URL = config.frigate.data_url;
+const FRIGATE_UI_URL = config.frigate.ui_url;
 const MQTT_BROKER = config.mqtt.broker;
 const MQTT_USER = config.mqtt.username;
 const MQTT_PASS = config.mqtt.password;
@@ -67,7 +68,7 @@ interface FrigateEvent {
 // --- Helper: Fetch Image into Memory (Buffer) ---
 // By returning a Buffer, keep the file in memory
 async function fetchSnapshotBuffer(eventId: string, queryParams: string = ''): Promise<Buffer | null> {
-    const url = `${FRIGATE_URL}/api/events/${eventId}/snapshot.jpg${queryParams}`;
+    const url = `${FRIGATE_DATA_URL}/api/events/${eventId}/snapshot.jpg${queryParams}`;
     try {
         const response = await axios.get(url, { responseType: 'arraybuffer' });
         return Buffer.from(response.data);
@@ -88,8 +89,8 @@ async function sendToDiscord(event: FrigateEvent, reviewId: string, croppedBuf: 
             color: objectColors[event.label] || 0x999999,
             description: `Started <t:${event.start_time.toString().split(".")[0]}:R>`,
             fields: [
-                { name: '\u200B', value: `[**Review Event**](${FRIGATE_URL}/review?id=${reviewId})`, inline: true },
-                { name: '\u200B', value: `[**Live View**](${FRIGATE_URL}/#${event.camera})`, inline: true },
+                { name: '\u200B', value: `[**Review Event**](${FRIGATE_UI_URL}/review?id=${reviewId})`, inline: true },
+                { name: '\u200B', value: `[**Live View**](${FRIGATE_UI_URL}/#${event.camera})`, inline: true },
             ],
             // Use the "attachment://" protocol to link to the uploaded files
             image: { url: 'attachment://cropped.jpg' },
@@ -155,7 +156,7 @@ client.on('message', async (topic, message) => {
             
             if (processedDetections.has(detectionId)) continue;
 
-            const eventUrl = `${FRIGATE_URL}/api/events/${detectionId}`;
+            const eventUrl = `${FRIGATE_DATA_URL}/api/events/${detectionId}`;
             const eventRes = await axios.get<FrigateEvent>(eventUrl);
             const event = eventRes.data;
 
